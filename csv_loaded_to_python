@@ -1,0 +1,33 @@
+import sys
+import csv
+from PyQt5.QtWidgets import *
+from PyQt5 import uic
+
+form_class = uic.loadUiType("movie.ui")[0]
+
+
+class WindowClass(QMainWindow, form_class):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+
+        file = open('movie.csv', 'r')
+        self.movie = csv.reader(file)
+        movie_list = []
+        for i in self.movie:
+            movie_list.append(i)
+        self.movie_table.setRowCount(len(movie_list))
+
+        for i in range(len(movie_list)):
+            for j in range(0, 7):
+                self.movie_table.setItem(i, j, QTableWidgetItem(movie_list[i][j]))
+
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+
+    main = WindowClass()
+
+    main.show()
+
+    app.exec_()
